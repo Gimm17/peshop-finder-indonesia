@@ -1,0 +1,19 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" width="512" height="512">
+  <rect width="512" height="512" rx="80" fill="#0f172a"/>
+  <g transform="translate(256,230)" fill="#f59e0b">
+    <!-- Paw pads -->
+    <ellipse cx="-80" cy="-70" rx="32" ry="38" transform="rotate(-15)"/>
+    <ellipse cx="80" cy="-70" rx="32" ry="38" transform="rotate(15)"/>
+    <ellipse cx="-120" cy="20" rx="28" ry="32" transform="rotate(-25)"/>
+    <ellipse cx="120" cy="20" rx="28" ry="32" transform="rotate(25)"/>
+    <!-- Main pad -->
+    <ellipse cx="0" cy="60" rx="75" ry="65"/>
+  </g>
+  <!-- Map pin -->
+  <g transform="translate(256,290)">
+    <path d="M0-28C-16-28-28-16-28 0S0 40 0 40S28 16 28 0S16-28 0-28Z" fill="#fbbf24" stroke="#0f172a" stroke-width="3"/>
+    <circle cx="0" cy="-2" r="10" fill="#0f172a"/>
+  </g>
+  <!-- Bottom text line effect -->
+  <rect x="180" y="400" width="152" height="6" rx="3" fill="#fbbf24" opacity="0.5"/>
+</svg>

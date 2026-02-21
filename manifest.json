@@ -1,0 +1,18 @@
+{
+  "name": "Petshop Finder",
+  "short_name": "PetFinder",
+  "description": "Cari petshop terdekat di seluruh Indonesia",
+  "start_url": "/",
+  "display": "standalone",
+  "background_color": "#0f172a",
+  "theme_color": "#f59e0b",
+  "orientation": "any",
+  "icons": [
+    {
+      "src": "/static/icons/icon.svg",
+      "sizes": "any",
+      "type": "image/svg+xml",
+      "purpose": "any"
+    }
+  ]
+}

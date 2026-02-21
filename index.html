@@ -1,0 +1,160 @@
+<!DOCTYPE html>
+<html lang="id">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="description" content="Cari petshop terdekat di seluruh Indonesia — rating, review, rute, dan jam buka." />
+  <meta name="theme-color" content="#f59e0b" />
+  <title>Petshop Finder Indonesia</title>
+  <link rel="manifest" href="/manifest.json" />
+  <link rel="icon" type="image/svg+xml" href="/static/icons/icon.svg" />
+  <link rel="apple-touch-icon" href="/static/icons/icon.svg" />
+  <link rel="stylesheet" href="static/css/style.css" />
+</head>
+
+<body>
+  <!-- PWA Install Banner -->
+  <div id="installBanner" class="install-banner hidden">
+    <span>📲 Install Petshop Finder di perangkat kamu!</span>
+    <div class="install-actions">
+      <button id="installBtn" class="btn btn-primary btn-small">Install</button>
+      <button id="dismissInstall" class="btn btn-secondary btn-small">Nanti</button>
+    </div>
+  </div>
+
+  <div class="app-shell">
+    <header class="app-header">
+      <div>
+        <p class="eyebrow" id="locationLabel">Indonesia</p>
+        <h1>Petshop Finder</h1>
+        <p class="subtitle">
+          Cari petshop terdekat di seluruh Indonesia, lihat rating/review, dan buat rute dari lokasi kamu.
+        </p>
+      </div>
+      <div class="header-actions">
+        <button id="locateBtn" class="btn btn-primary">📍 Gunakan Lokasi Saya</button>
+        <button id="refreshDataBtn" class="btn btn-secondary">Refresh Data</button>
+      </div>
+    </header>
+
+    <main class="layout-grid">
+      <section class="map-panel card">
+        <div class="map-toolbar">
+          <div class="toolbar-group">
+            <label for="radiusSelect">Radius</label>
+            <select id="radiusSelect">
+              <option value="3000">3 km</option>
+              <option value="5000" selected>5 km</option>
+              <option value="8000">8 km</option>
+              <option value="12000">12 km</option>
+              <option value="20000">20 km</option>
+              <option value="50000">50 km</option>
+            </select>
+          </div>
+          <div class="toolbar-group wide">
+            <label for="searchInput">Cari</label>
+            <input id="searchInput" type="text" placeholder="Cari nama petshop / alamat..." />
+          </div>
+          <div class="toolbar-group">
+            <label for="sortSelect">Urutkan</label>
+            <select id="sortSelect">
+              <option value="nearest" selected>Terdekat</option>
+              <option value="popular">Terpopuler</option>
+              <option value="rating">Rating Tertinggi</option>
+              <option value="reviews">Review Terbanyak</option>
+              <option value="name">Nama (A-Z)</option>
+            </select>
+          </div>
+        </div>
+
+        <!-- Service Filters -->
+        <div class="filter-bar" id="filterBar">
+          <span class="filter-label">Filter:</span>
+          <button class="filter-tag active" data-filter="all">🐾 Semua</button>
+          <button class="filter-tag" data-filter="grooming">✂️ Grooming</button>
+          <button class="filter-tag" data-filter="hotel">🏨 Pet Hotel</button>
+          <button class="filter-tag" data-filter="vaksin">💉 Vaksin</button>
+          <button class="filter-tag" data-filter="food">🍖 Pet Food</button>
+        </div>
+
+        <div id="map"></div>
+
+        <div class="map-footer">
+          <div class="status-wrap">
+            <span id="statusBadge" class="status-badge">Siap</span>
+            <span id="sourceInfo" class="source-info">Sumber data: Google Maps</span>
+          </div>
+          <button id="fitAllBtn" class="btn btn-secondary btn-small">Lihat Semua Marker</button>
+        </div>
+      </section>
+
+      <aside class="side-panel">
+        <section class="card stats-card">
+          <div class="stat-grid">
+            <div class="stat-item">
+              <span class="stat-label">Jumlah petshop</span>
+              <strong id="totalPetshopCount">0</strong>
+            </div>
+            <div class="stat-item">
+              <span class="stat-label">Terdekat</span>
+              <strong id="nearestPetshopName">-</strong>
+              <small id="nearestPetshopDistance">-</small>
+            </div>
+            <div class="stat-item">
+              <span class="stat-label">Terpopuler</span>
+              <strong id="popularPetshopName">-</strong>
+              <small id="popularPetshopMeta">-</small>
+            </div>
+          </div>
+          <div class="quick-actions">
+            <button id="showNearestRouteBtn" class="btn btn-primary">Rute ke Terdekat</button>
+            <button id="showPopularRouteBtn" class="btn btn-secondary">Rute ke Terpopuler</button>
+          </div>
+        </section>
+
+        <section class="card selector-card">
+          <div class="selector-row">
+            <label for="petshopDropdown">Pilih Petshop</label>
+            <select id="petshopDropdown">
+              <option value="">-- Pilih petshop --</option>
+            </select>
+          </div>
+          <div class="quick-actions">
+            <button id="confirmButton" class="btn btn-primary">Tampilkan Rute</button>
+            <button id="cancelButton" class="btn btn-secondary">Hapus Rute</button>
+          </div>
+        </section>
+
+        <section class="card detail-card">
+          <div class="detail-header">
+            <h2>Detail Petshop</h2>
+            <button id="clearSelectionBtn" class="icon-btn" title="Hapus pilihan">✕</button>
+          </div>
+          <div id="petshopDetail" class="detail-empty">
+            Pilih marker atau item petshop untuk melihat detail.
+          </div>
+        </section>
+
+        <section class="card list-card">
+          <div class="list-header">
+            <h2>Daftar Petshop</h2>
+            <span id="listCountBadge" class="pill">0 item</span>
+          </div>
+          <div id="petshopList" class="petshop-list"></div>
+        </section>
+      </aside>
+    </main>
+  </div>
+
+  <script>
+    window.APP_CONFIG = {
+      defaultCenter: { lat: -2.5, lng: 118.0 },
+      defaultZoom: 5,
+      googleMapsApiKey: "YOUR_GOOGLE_MAPS_API_KEY_HERE",
+    };
+  </script>
+  <script src="static/js/script.js"></script>
+</body>
+
+</html>

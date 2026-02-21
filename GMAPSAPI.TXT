@@ -1,0 +1,9 @@
+AIzaSyA6FIxoF7S2u9nRVyDeLLXW1YE0KGG9rzw
+
+<script>
+    window.APP_CONFIG = {
+      googleMapsApiKey: "AIzaSyA6FIxoF7S2u9nRVyDeLLXW1YE0KGG9rzw",
+      defaultCenter: { lat: -2.5, lng: 118.0 },
+      defaultZoom: 5,
+    };
+  </script>
