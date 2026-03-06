@@ -59,6 +59,17 @@ function googleGet(url) {
 /* ── Static files ─────────────────────────────────────────── */
 app.use(express.static(path.join(__dirname)));
 
+/* ── Frontend Config ──────────────────────────────────────── */
+app.get("/config.js", (req, res) => {
+  const config = {
+    defaultCenter: { lat: -2.5, lng: 118.0 },
+    defaultZoom: 5,
+    googleMapsApiKey: API_KEY,
+  };
+  res.type("application/javascript");
+  res.send(`window.APP_CONFIG = ${JSON.stringify(config)};`);
+});
+
 /* ── API: Search petshops ─────────────────────────────────── */
 app.get("/api/petshops", async (req, res) => {
   try {
